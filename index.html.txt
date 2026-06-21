@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>EMI Calculator</h2>
+
+    <label>Loan Amount (₹)</label>
+    <input type="number" id="loan" placeholder="Enter Loan Amount">
+
+    <label>Annual Interest Rate (%)</label>
+    <input type="number" id="rate" placeholder="Enter Interest Rate">
+
+    <label>Loan Tenure (Years)</label>
+    <input type="number" id="years" placeholder="Enter Years">
+
+    <button onclick="calculateEMI()">Calculate EMI</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculateEMI() {
+    let P = parseFloat(document.getElementById("loan").value);
+    let annualRate = parseFloat(document.getElementById("rate").value);
+    let years = parseFloat(document.getElementById("years").value);
+
+    if (!P || !annualRate || !years) {
+        document.getElementById("result").innerHTML =
+            "Please enter all values.";
+        return;
+    }
+
+    let r = annualRate / 12 / 100;
+    let n = years * 12;
+
+    let EMI = (P * r * Math.pow(1 + r, n)) /
+              (Math.pow(1 + r, n) - 1);
+
+    let totalPayment = EMI * n;
+    let totalInterest = totalPayment - P;
+
+    document.getElementById("result").innerHTML =
+        `<p><b>Monthly EMI:</b> ₹${EMI.toFixed(2)}</p>
+         <p><b>Total Payment:</b> ₹${totalPayment.toFixed(2)}</p>
+         <p><b>Total Interest:</b> ₹${totalInterest.toFixed(2)}</p>`;
+}
+</script>
+
+</body>
+</html>
